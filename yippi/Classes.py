@@ -424,7 +424,7 @@ class Note(_BaseMixin):
             "note[height]": self.height,
             "note[body]": self.body,
         }
-        api_response = self._client._call_api("PUT", NOTES_URL, data=post_data)
+        api_response = self._client._call_api("POST", NOTES_URL, data=post_data)
         api_response = cast(dict, api_response)
         return api_response
 
