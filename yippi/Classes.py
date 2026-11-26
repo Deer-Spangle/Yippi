@@ -614,7 +614,7 @@ class Flag(_BaseMixin):
             self.reason: str = json_data.get("reason")
             self.is_resolved: bool = json_data.get("is_resolved")
             self.is_deletion: bool = json_data.get("is_deletion")
-            self.category: str = json_data.get("category")
+            self.category: str = json_data.get("note")
 
     def __repr__(self) -> str:
         return f"Flag(id={self.id})"
