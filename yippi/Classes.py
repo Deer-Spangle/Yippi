@@ -403,7 +403,7 @@ class Note(_BaseMixin):
             "note[body]": self.body,
         }
         api_response = self._client._call_api(
-            "PUT", NOTE_URL + f"{self.id}.json", data=post_data
+            "PATCH", NOTE_URL + f"{self.id}.json", data=post_data
         )
         api_response = cast(dict, api_response)
         return api_response
