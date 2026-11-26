@@ -259,7 +259,7 @@ class Post(_BaseMixin):
         """Updates the post. **This function has not been tested.**
 
         Args:
-            has_notes: Does the post have embedded notes or not.
+            has_notes: [DEPRECATED] No longer used by e621 API.
             reason (optional): Reasoning behind the edit. Defaults to None.
 
         Raises:
@@ -308,7 +308,6 @@ class Post(_BaseMixin):
         post_data.update(
             {
                 "post[edit_reason]": reason or "",
-                "post[has_embedded_notes]": str(has_notes).lower(),
             }
         )
 
