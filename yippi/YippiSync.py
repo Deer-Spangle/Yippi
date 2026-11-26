@@ -68,12 +68,12 @@ class YippiClient(AbstractYippi):
         page: Union[int, str] = None,
     ) -> List[Post]:
         response = self._get_posts(tags, limit, page)
-        result = [Post(p, client=self) for p in response["posts"]]  # type: ignore
+        result = [Post(p, client=self) for p in response]  # type: ignore
         return result
 
     def post(self, post_id: int) -> Post:
         response = self._get_post(post_id)
-        return Post(response["post"], client=self)  # type: ignore
+        return Post(response, client=self)  # type: ignore
 
     def notes(
         self,

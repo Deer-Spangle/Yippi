@@ -89,12 +89,12 @@ class AsyncYippiClient(AbstractYippi):
         page: Union[int, str] = None,
     ) -> List[Post]:
         response = await self._get_posts(tags, limit, page)  # type: ignore
-        posts = [Post(p, client=self) for p in response["posts"]]
+        posts = [Post(p, client=self) for p in response]
         return posts
 
     async def post(self, post_id: int) -> Post:
         api_res = await self._get_post(post_id)  # type: ignore
-        return Post(api_res["post"], client=self)
+        return Post(api_res, client=self)
 
     async def notes(
         self,
