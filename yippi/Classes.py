@@ -77,24 +77,24 @@ class Post(_BaseMixin):
         self.file_path: Optional[str] = None
         self.file_url: Optional[str] = None
         if json_data:
-            self.file: dict = json_data.get("file")
-            self.preview: dict = json_data.get("preview")
-            self.sample: dict = json_data.get("sample")
-            self.score: dict = json_data.get("score")
+            self.file: dict = json_data.get("files", {}).get("original")
+            self.preview: dict = json_data.get("files", {}).get("preview")
+            self.sample: dict = json_data.get("files", {}).get("sample")
+            self.score: dict = json_data.get("stats", {}).get("score")
             self.tags: dict = json_data.get("tags")
             self.locked_tags: list = json_data.get("locked_tags")
             self.change_seq: int = json_data.get("change_seq")
             self.flags: dict = json_data.get("flags")
             self.rating: Rating = Rating(json_data.get("rating"))
-            self.fav_count: int = json_data.get("fav_count")
+            self.fav_count: int = json_data.get("stats", {}).get("fav_count")
             self.sources: list = json_data.get("sources")
             self.pools: list = json_data.get("pools")
             self.relationships: dict = json_data.get("relationships")
             self.approver_id: int = json_data.get("approver_id")
             self.uploader_id: int = json_data.get("uploader_id")
             self.description: str = json_data.get("description")
-            self.comment_count: int = json_data.get("comment_count")
-            self.is_favorited: bool = json_data.get("is_favorited")
+            self.comment_count: int = json_data.get("stats", {}).get("comment_count")
+            self.is_favorited: bool = json_data.get("stats", {}).get("is_favorited")
 
     def __repr__(self) -> str:
         if self.id:
