@@ -568,7 +568,7 @@ class Pool(_BaseMixin):
         raise NotImplementedError
 
     def revert(self, version_id: str) -> dict:
-        """Reverts note to specified version_id. **This function has not been tested.**
+        """Reverts pool to specified version_id. **This function has not been tested.**
 
         Args:
             version_id: Target version to revert.
@@ -583,11 +583,11 @@ class Pool(_BaseMixin):
         """
         warnings.warn("This function has not been tested and should not be used.")
         if not self.id:
-            raise UserError("Post does not come from e621 API.")
+            raise UserError("Pool does not come from e621 API.")
 
         data = {"version_id": version_id}
         api_response = self._client._call_api(
-            "PUT", BASE_URL + f"/notes/{self.id}/revert.json", data=data
+            "PUT", BASE_URL + f"/pools/{self.id}/revert.json", data=data
         )
         api_response = cast(dict, api_response)
         return api_response
