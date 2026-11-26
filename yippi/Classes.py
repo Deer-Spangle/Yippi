@@ -480,7 +480,7 @@ class Pool(_BaseMixin):
             self.description: str = json_data.get("description")
             self.is_active: bool = json_data.get("is_active")
             self.category: str = json_data.get("category")
-            self.is_deleted: bool = json_data.get("is_deleted")
+            self.is_deleted: bool = False
             self.post_ids: list = json_data.get("post_ids")
             self.creator_name: str = json_data.get("creator_name")
             self.post_count: int = json_data.get("post_count")
