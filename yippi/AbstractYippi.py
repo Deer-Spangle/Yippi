@@ -23,6 +23,7 @@ from .Constants import POOL_URL
 from .Constants import POOLS_URL
 from .Constants import POST_URL
 from .Constants import POSTS_URL
+from .Constants import POSTS_MODE_EXTENDED
 from .Exceptions import UserError
 
 T = TypeVar("T")
@@ -153,7 +154,7 @@ class AbstractYippi(ABC):
         """
         if isinstance(tags, list):
             tags = " ".join(tags)
-        return self._call_api("GET", POSTS_URL, tags=tags, limit=limit, page=page)  # type: ignore
+        return self._call_api("GET", POSTS_URL + POSTS_MODE_EXTENDED, tags=tags, limit=limit, page=page)  # type: ignore
 
     def _get_post(self, post_id: int) -> RequestResponse:
         """Internal fetch of posts search.
@@ -168,7 +169,7 @@ class AbstractYippi(ABC):
             JSON object of server's response.
 
         """
-        url = POST_URL + str(post_id) + ".json"
+        url = POST_URL + str(post_id) + ".json" + POSTS_MODE_EXTENDED
         return self._call_api("GET", url)  # type: ignore
 
     def _get_flags(
