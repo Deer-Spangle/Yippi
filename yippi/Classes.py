@@ -77,6 +77,7 @@ class Post(_BaseMixin):
         self.file_path: Optional[str] = None
         self.file_url: Optional[str] = None
         if json_data:
+            self.file_meta: dict = json_data.get("files", {}).get("meta")
             self.file: dict = json_data.get("files", {}).get("original")
             self.preview: dict = json_data.get("files", {}).get("preview")
             self.sample: dict = json_data.get("files", {}).get("sample")
