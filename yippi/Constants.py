@@ -1,6 +1,5 @@
 BASE_URL = "https://e621.net"
 POSTS_URL = BASE_URL + "/posts.json"
-POSTS_MODE_EXTENDED = "?mode=extended"
 UPLOAD_URL = BASE_URL + "/uploads.json"
 FLAGS_URL = BASE_URL + "/post_flags.json"
 NOTES_URL = BASE_URL + "/notes.json"
