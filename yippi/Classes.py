@@ -77,24 +77,25 @@ class Post(_BaseMixin):
         self.file_path: Optional[str] = None
         self.file_url: Optional[str] = None
         if json_data:
-            self.file: dict = json_data.get("file")
-            self.preview: dict = json_data.get("preview")
-            self.sample: dict = json_data.get("sample")
-            self.score: dict = json_data.get("score")
+            self.file_meta: dict = json_data.get("files", {}).get("meta")
+            self.file: dict = json_data.get("files", {}).get("original")
+            self.preview: dict = json_data.get("files", {}).get("preview")
+            self.sample: dict = json_data.get("files", {}).get("sample")
+            self.score: dict = json_data.get("stats", {}).get("score")
             self.tags: dict = json_data.get("tags")
             self.locked_tags: list = json_data.get("locked_tags")
             self.change_seq: int = json_data.get("change_seq")
             self.flags: dict = json_data.get("flags")
             self.rating: Rating = Rating(json_data.get("rating"))
-            self.fav_count: int = json_data.get("fav_count")
+            self.fav_count: int = json_data.get("stats", {}).get("fav_count")
             self.sources: list = json_data.get("sources")
             self.pools: list = json_data.get("pools")
             self.relationships: dict = json_data.get("relationships")
             self.approver_id: int = json_data.get("approver_id")
             self.uploader_id: int = json_data.get("uploader_id")
             self.description: str = json_data.get("description")
-            self.comment_count: int = json_data.get("comment_count")
-            self.is_favorited: bool = json_data.get("is_favorited")
+            self.comment_count: int = json_data.get("stats", {}).get("comment_count")
+            self.is_favorited: bool = json_data.get("stats", {}).get("is_favorited")
 
     def __repr__(self) -> str:
         if self.id:
@@ -259,7 +260,7 @@ class Post(_BaseMixin):
         """Updates the post. **This function has not been tested.**
 
         Args:
-            has_notes: Does the post have embedded notes or not.
+            has_notes: [DEPRECATED] No longer used by e621 API.
             reason (optional): Reasoning behind the edit. Defaults to None.
 
         Raises:
@@ -308,7 +309,6 @@ class Post(_BaseMixin):
         post_data.update(
             {
                 "post[edit_reason]": reason or "",
-                "post[has_embedded_notes]": str(has_notes).lower(),
             }
         )
 
@@ -404,7 +404,7 @@ class Note(_BaseMixin):
             "note[body]": self.body,
         }
         api_response = self._client._call_api(
-            "PUT", NOTE_URL + f"{self.id}.json", data=post_data
+            "PATCH", NOTE_URL + f"{self.id}.json", data=post_data
         )
         api_response = cast(dict, api_response)
         return api_response
@@ -425,7 +425,7 @@ class Note(_BaseMixin):
             "note[height]": self.height,
             "note[body]": self.body,
         }
-        api_response = self._client._call_api("PUT", NOTES_URL, data=post_data)
+        api_response = self._client._call_api("POST", NOTES_URL, data=post_data)
         api_response = cast(dict, api_response)
         return api_response
 
@@ -481,7 +481,7 @@ class Pool(_BaseMixin):
             self.description: str = json_data.get("description")
             self.is_active: bool = json_data.get("is_active")
             self.category: str = json_data.get("category")
-            self.is_deleted: bool = json_data.get("is_deleted")
+            self.is_deleted: bool = False
             self.post_ids: list = json_data.get("post_ids")
             self.creator_name: str = json_data.get("creator_name")
             self.post_count: int = json_data.get("post_count")
@@ -569,7 +569,7 @@ class Pool(_BaseMixin):
         raise NotImplementedError
 
     def revert(self, version_id: str) -> dict:
-        """Reverts note to specified version_id. **This function has not been tested.**
+        """Reverts pool to specified version_id. **This function has not been tested.**
 
         Args:
             version_id: Target version to revert.
@@ -584,11 +584,11 @@ class Pool(_BaseMixin):
         """
         warnings.warn("This function has not been tested and should not be used.")
         if not self.id:
-            raise UserError("Post does not come from e621 API.")
+            raise UserError("Pool does not come from e621 API.")
 
         data = {"version_id": version_id}
         api_response = self._client._call_api(
-            "PUT", BASE_URL + f"/notes/{self.id}/revert.json", data=data
+            "PUT", BASE_URL + f"/pools/{self.id}/revert.json", data=data
         )
         api_response = cast(dict, api_response)
         return api_response
@@ -615,7 +615,7 @@ class Flag(_BaseMixin):
             self.reason: str = json_data.get("reason")
             self.is_resolved: bool = json_data.get("is_resolved")
             self.is_deletion: bool = json_data.get("is_deletion")
-            self.category: str = json_data.get("category")
+            self.category: str = json_data.get("note")
 
     def __repr__(self) -> str:
         return f"Flag(id={self.id})"
